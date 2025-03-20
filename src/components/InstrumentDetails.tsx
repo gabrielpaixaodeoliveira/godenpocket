@@ -1,5 +1,4 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
 import { Box, Typography, Paper, Container } from '@mui/material';
 import { Instrument } from '../types/Instrument';
 
