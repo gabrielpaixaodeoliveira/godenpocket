@@ -11,13 +11,16 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
+  Snackbar,
 } from '@mui/material';
 import { QRCodeSVG } from 'qrcode.react';
 import { Instrument } from '../types/Instrument';
+import { instrumentService } from '../services/instrumentService';
 
 const InstrumentForm: React.FC = () => {
   const [showQRCode, setShowQRCode] = useState(false);
-  const [instrumentData, setInstrumentData] = useState<Instrument | null>(null);
+  const [instrumentId, setInstrumentId] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const {
     register,
@@ -26,15 +29,21 @@ const InstrumentForm: React.FC = () => {
     reset,
   } = useForm<Instrument>();
 
-  const onSubmit = (data: Instrument) => {
-    setInstrumentData(data);
-    setShowQRCode(true);
-    reset();
+  const onSubmit = async (data: Instrument) => {
+    try {
+      const id = await instrumentService.saveInstrument(data);
+      setInstrumentId(id);
+      setShowQRCode(true);
+      reset();
+    } catch (err) {
+      setError('Erro ao salvar instrumento');
+      console.error(err);
+    }
   };
 
   const handleClose = () => {
     setShowQRCode(false);
-    setInstrumentData(null);
+    setInstrumentId(null);
   };
 
   return (
@@ -106,7 +115,7 @@ const InstrumentForm: React.FC = () => {
         <DialogContent>
           <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', p: 2 }}>
             <QRCodeSVG
-              value={`${window.location.origin}/instrument/${encodeURIComponent(JSON.stringify(instrumentData))}`}
+              value={`${window.location.origin}/instrument/${instrumentId}`}
               size={256}
             />
             <Typography variant="body2" sx={{ mt: 2, textAlign: 'center' }}>
@@ -118,6 +127,13 @@ const InstrumentForm: React.FC = () => {
           <Button onClick={handleClose}>Fechar</Button>
         </DialogActions>
       </Dialog>
+
+      <Snackbar
+        open={!!error}
+        autoHideDuration={6000}
+        onClose={() => setError(null)}
+        message={error}
+      />
     </Container>
   );
 };
