@@ -106,7 +106,7 @@ const InstrumentForm: React.FC = () => {
         <DialogContent>
           <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', p: 2 }}>
             <QRCodeSVG
-              value={`${window.location.origin}/instrument/${JSON.stringify(instrumentData)}`}
+              value={`${window.location.origin}/instrument/${encodeURIComponent(JSON.stringify(instrumentData))}`}
               size={256}
             />
             <Typography variant="body2" sx={{ mt: 2, textAlign: 'center' }}>
