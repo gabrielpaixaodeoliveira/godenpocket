@@ -35,5 +35,5 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: "upload"
           app_location: "/"
-          output_location: "out"  # Diretório de saída do Next.js
+          output_location: "out"  # Alterado para "out" que é onde o Next.js coloca os arquivos estáticos
           skip_app_build: true 

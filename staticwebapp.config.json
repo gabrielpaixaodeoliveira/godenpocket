@@ -1,13 +1,17 @@
 {
   "navigationFallback": {
-    "rewrite": "/index.html",
-    "exclude": ["/images/*.{png,jpg,gif}", "/css/*"]
+    "rewrite": "/index.html"
   },
   "routes": [
     {
-      "route": "/instrument/*",
-      "serve": "/instrument/[id].html",
-      "statusCode": 200
+      "route": "/instrument/:id",
+      "rewrite": "/instrument/[id].html"
     }
-  ]
+  ],
+  "platform": {
+    "apiRuntime": "node:20"
+  },
+  "buildProperties": {
+    "outputLocation": "out"
+  }
 } 
